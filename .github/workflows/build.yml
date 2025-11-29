@@ -1,0 +1,83 @@
+name: Build Executables
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            ext: ""
+          - os: windows-latest
+            platform: windows
+            ext: ".exe"
+          - os: macos-latest
+            platform: macos
+            ext: ""
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build executable
+      run: |
+        pyinstaller toolkit.spec
+
+    - name: Rename executable
+      working-directory: dist
+      run: |
+        mv CrowdStrikeIOMToolkit${{ matrix.ext }} CrowdStrikeIOMToolkit-${{ matrix.platform }}${{ matrix.ext }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: CrowdStrikeIOMToolkit-${{ matrix.platform }}
+        path: dist/CrowdStrikeIOMToolkit-${{ matrix.platform }}${{ matrix.ext }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          CrowdStrikeIOMToolkit-linux/CrowdStrikeIOMToolkit-linux
+          CrowdStrikeIOMToolkit-windows/CrowdStrikeIOMToolkit-windows.exe
+          CrowdStrikeIOMToolkit-macos/CrowdStrikeIOMToolkit-macos
+        body: |
+          ## CrowdStrike Custom IOM Toolkit
+
+          Single executable binaries for all platforms.
+
+          **Usage:**
+          - GUI Mode (default): `./CrowdStrikeIOMToolkit-<platform>`
+          - CLI Mode: `./CrowdStrikeIOMToolkit-<platform> --cli`
+
+          **Requirements:**
+          - CrowdStrike API credentials (Client ID, Client Secret)
+          - Network access to CrowdStrike API
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

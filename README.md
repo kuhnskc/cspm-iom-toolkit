@@ -1,0 +1,185 @@
+# CrowdStrike Custom IOM Toolkit
+
+A comprehensive toolkit for managing Custom Indicators of Misconfiguration (IOMs) in CrowdStrike CSPM environments. This tool provides both graphical and command-line interfaces for creating, testing, and managing custom security policies.
+
+## Features
+
+- **Dual Interface**: GUI mode (default) and CLI mode with `--cli` flag
+- **Policy Management**: Create, update, delete, and view custom IOM policies
+- **Interactive Policy Testing**: Test policies against live cloud assets
+- **Multi-Cloud Support**: AWS, GCP, and Azure resource types
+- **Rego Policy Editor**: Built-in editor with syntax helpers and templates
+- **Asset Data Export**: Export sample asset data for policy development
+- **Cross-Platform**: Single executable binaries for Windows, macOS, and Linux
+
+## Installation
+
+### Option 1: Download Pre-built Executable (Recommended)
+
+Download the latest release for your platform from the [Releases](https://github.com/kuhnskc/cspm-iom-toolkit/releases) page:
+
+- **Windows**: `CrowdStrikeIOMToolkit-windows.exe`
+- **macOS**: `CrowdStrikeIOMToolkit-macos`
+- **Linux**: `CrowdStrikeIOMToolkit-linux`
+
+Make the file executable on macOS/Linux:
+```bash
+chmod +x CrowdStrikeIOMToolkit-macos  # or -linux
+```
+
+### Option 2: Run from Source
+
+```bash
+git clone https://github.com/kuhnskc/cspm-iom-toolkit.git
+cd cspm-iom-toolkit
+pip install -r requirements.txt
+python custom_iom_toolkit.py
+```
+
+## CrowdStrike API Setup
+
+### Required API Scopes
+
+Create a new API client in your CrowdStrike console with these scopes:
+
+**Required Scopes:**
+- `CSPM registration: Read, Write`
+- `Cloud Security Assessment: Read`
+
+**API Client Setup:**
+1. Log into your CrowdStrike console
+2. Navigate to **Support > API Clients and Keys**
+3. Click **Add new API client**
+4. Provide a name: "Custom IOM Toolkit"
+5. Add the required scopes listed above
+6. Click **Add** and save your Client ID and Client Secret
+
+### Authentication Methods
+
+**Method 1: Environment Variables (Recommended)**
+```bash
+export FALCON_CLIENT_ID="your_client_id"
+export FALCON_CLIENT_SECRET="your_client_secret"
+export FALCON_BASE_URL="https://api.crowdstrike.com"  # or your cloud URL
+```
+
+**Method 2: Interactive Credential Entry**
+
+The toolkit will prompt for credentials if environment variables are not set.
+
+### Cloud Environment URLs
+
+- **US-1**: `https://api.crowdstrike.com`
+- **US-2**: `https://api.us-2.crowdstrike.com`
+- **EU-1**: `https://api.eu-1.crowdstrike.com`
+- **US-GOV-1**: `https://api.laggar.gcw.crowdstrike.com`
+
+## Usage
+
+### GUI Mode (Default)
+
+```bash
+# Using executable
+./CrowdStrikeIOMToolkit-macos
+
+# Using Python
+python custom_iom_toolkit.py
+```
+
+### CLI Mode
+
+```bash
+# Using executable
+./CrowdStrikeIOMToolkit-macos --cli
+
+# Using Python
+python custom_iom_toolkit.py --cli
+```
+
+## Main Features
+
+### Policy Management
+- **View Policies**: List and examine existing custom policies
+- **Create Policies**: Step-by-step policy creation wizard
+- **Edit Policies**: Modify descriptions, severity, alerts, and Rego logic
+- **Delete Policies**: Remove unwanted policies with confirmation
+- **Test Policies**: Validate policy logic against live cloud assets
+
+### Policy Testing
+The toolkit can test your Rego policies against real assets in your environment:
+- Tests against up to 3 active assets for performance
+- Shows pass/fail results with detailed analysis
+- Provides policy behavior interpretation
+- Helps validate policy logic before deployment
+
+### Asset Data Export
+Export sample asset configurations to understand data structures:
+- Fetches live asset data from your CSPM environment
+- Exports to JSON format for policy development
+- Shows available fields for Rego policy writing
+
+## Policy Creation Workflow
+
+1. **Basic Information**: Name and description
+2. **Resource Type**: Select target cloud resource type
+3. **Sample Data**: Optional - fetch sample asset data for reference
+4. **Severity Level**: Critical (0) to Informational (3)
+5. **Alert Information**: User-facing violation messages
+6. **Remediation Steps**: Step-by-step fix instructions
+7. **Rego Logic**: Write the policy evaluation logic
+8. **Testing**: Test against live assets before creation
+
+## Rego Policy Development
+
+The toolkit includes:
+- **Syntax Templates**: Pre-built Rego templates for common patterns
+- **Code Formatting**: Automatic indentation and structure
+- **Testing Integration**: Test policies before saving
+- **Asset Data Access**: Sample real asset data for policy development
+
+### Rego Format Requirements
+
+```rego
+package crowdstrike
+
+# Required default result
+default result = "pass"
+
+# Policy logic
+result = "fail" if {
+    input.resource_type == "AWS::S3::Bucket"
+    # Your violation conditions
+}
+```
+
+## Alert and Remediation Format
+
+Use pipe-separated format for automatic numbering:
+
+**Alert Info**: `Security issue detected|Resource violates policy|Immediate attention required`
+
+**Remediation**: `Navigate to AWS Console|Fix the configuration|Verify changes|Document action`
+
+CrowdStrike automatically converts these to numbered lists in the console.
+
+## Building from Source
+
+To create your own executable:
+
+```bash
+pip install pyinstaller
+pyinstaller toolkit.spec
+```
+
+The executable will be created in the `dist/` directory.
+
+## Support
+
+For issues related to:
+- **CrowdStrike API**: Contact CrowdStrike support
+- **Tool Usage**: Check policy syntax and API connectivity
+- **Policy Logic**: Refer to [Open Policy Agent Rego documentation](https://www.openpolicyagent.org/docs/latest/policy-language/)
+
+## License
+
+This project is provided as-is for CrowdStrike customers to manage their custom IOM policies.
