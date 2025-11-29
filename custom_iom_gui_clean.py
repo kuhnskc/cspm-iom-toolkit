@@ -1196,6 +1196,10 @@ result = "fail" if {
         if dpg.does_item_exist("rego_editor_window"):
             dpg.delete_item("rego_editor_window")
 
+        # Also ensure the input field tag is cleared if it exists independently
+        if dpg.does_item_exist("rego_code_input"):
+            dpg.delete_item("rego_code_input")
+
         with dpg.window(label="Edit Rego Logic", modal=True, show=True,
                        width=1000, height=700, pos=[100, 50], tag="rego_editor_window"):
 

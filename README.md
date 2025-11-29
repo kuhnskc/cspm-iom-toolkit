@@ -64,6 +64,56 @@ pip install -r requirements.txt
 python custom_iom_toolkit.py
 ```
 
+### Virtual Environment Setup (Recommended for Source Installation)
+
+To avoid dependency conflicts, it's recommended to use a Python virtual environment:
+
+**Using venv (Python 3.3+):**
+```bash
+# Clone and navigate to project
+git clone https://github.com/kuhnskc/cspm-iom-toolkit.git
+cd cspm-iom-toolkit
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On macOS/Linux:
+source venv/bin/activate
+# On Windows:
+venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python custom_iom_toolkit.py
+
+# To deactivate when done
+deactivate
+```
+
+**Using conda:**
+```bash
+# Create conda environment
+conda create -n cspm-toolkit python=3.9
+conda activate cspm-toolkit
+
+# Clone and install
+git clone https://github.com/kuhnskc/cspm-iom-toolkit.git
+cd cspm-iom-toolkit
+pip install -r requirements.txt
+
+# Run the application
+python custom_iom_toolkit.py
+```
+
+**Benefits of Virtual Environments:**
+- Isolates project dependencies from system Python
+- Prevents version conflicts with other Python projects
+- Makes dependency management cleaner and more predictable
+- Recommended best practice for Python development
+
 ## CrowdStrike API Setup
 
 ### Required API Scopes
