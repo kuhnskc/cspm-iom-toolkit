@@ -27,6 +27,34 @@ Make the file executable on macOS/Linux:
 chmod +x CrowdStrikeIOMToolkit-macos  # or -linux
 ```
 
+### macOS Security Warning
+
+When running the macOS executable, you may see a security warning: *"CrowdStrikeIOMToolkit-macos cannot be opened because it is from an unidentified developer."*
+
+This is normal for unsigned applications. To safely run the toolkit:
+
+**Method 1: Right-click Override**
+1. Right-click (or Control+click) on `CrowdStrikeIOMToolkit-macos`
+2. Select **"Open"** from the context menu
+3. Click **"Open"** in the warning dialog
+4. The app will run and be remembered as safe
+
+**Method 2: System Preferences**
+1. Try to run the app normally (it will be blocked)
+2. Go to **System Preferences > Security & Privacy > General**
+3. Click **"Open Anyway"** next to the blocked app message
+4. Confirm by clicking **"Open"**
+
+**Method 3: Command Line**
+```bash
+# Remove quarantine and make executable
+xattr -d com.apple.quarantine CrowdStrikeIOMToolkit-macos
+chmod +x CrowdStrikeIOMToolkit-macos
+./CrowdStrikeIOMToolkit-macos
+```
+
+This warning appears because the executable is not code-signed by an Apple Developer. The software is safe to use.
+
 ### Option 2: Run from Source
 
 ```bash
