@@ -10,31 +10,31 @@ A comprehensive toolkit for managing Custom Indicators of Misconfiguration (IOMs
 - **Multi-Cloud Support**: AWS, GCP, and Azure resource types
 - **Rego Policy Editor**: Built-in editor with syntax helpers and templates
 - **Asset Data Export**: Export sample asset data for policy development
-- **Cross-Platform**: Single executable binaries for Windows, macOS, and Linux
+- **Cross-Platform**: Optimized for macOS ARM64 (Apple Silicon), source code supports all platforms
 
 ## Installation
 
 ### Option 1: Download Pre-built Executable (Recommended)
 
-Download the latest release for your platform from the [Releases](https://github.com/kuhnskc/cspm-iom-toolkit/releases) page:
+Download the latest release for macOS ARM64 from the [Releases](https://github.com/kuhnskc/cspm-iom-toolkit/releases) page:
 
-- **Windows**: `CrowdStrikeIOMToolkit-windows.exe`
-- **macOS**: `CrowdStrikeIOMToolkit-macos`
-- **Linux**: `CrowdStrikeIOMToolkit-linux`
+- **macOS ARM64**: `CrowdStrikeIOMToolkit-macos-arm64`
 
-Make the file executable on macOS/Linux:
+Make the file executable:
 ```bash
-chmod +x CrowdStrikeIOMToolkit-macos  # or -linux
+chmod +x CrowdStrikeIOMToolkit-macos-arm64
 ```
+
+**Note:** This toolkit is specifically built for macOS ARM64 (Apple Silicon) machines. For other platforms or Intel Macs, please use Option 2 (Run from Source) below.
 
 ### macOS Security Warning
 
-When running the macOS executable, you may see a security warning: *"CrowdStrikeIOMToolkit-macos cannot be opened because it is from an unidentified developer."*
+When running the macOS executable, you may see a security warning: *"CrowdStrikeIOMToolkit-macos-arm64 cannot be opened because it is from an unidentified developer."*
 
 This is normal for unsigned applications. To safely run the toolkit:
 
 **Method 1: Right-click Override**
-1. Right-click (or Control+click) on `CrowdStrikeIOMToolkit-macos`
+1. Right-click (or Control+click) on `CrowdStrikeIOMToolkit-macos-arm64`
 2. Select **"Open"** from the context menu
 3. Click **"Open"** in the warning dialog
 4. The app will run and be remembered as safe
@@ -48,9 +48,9 @@ This is normal for unsigned applications. To safely run the toolkit:
 **Method 3: Command Line**
 ```bash
 # Remove quarantine and make executable
-xattr -d com.apple.quarantine CrowdStrikeIOMToolkit-macos
-chmod +x CrowdStrikeIOMToolkit-macos
-./CrowdStrikeIOMToolkit-macos
+xattr -d com.apple.quarantine CrowdStrikeIOMToolkit-macos-arm64
+chmod +x CrowdStrikeIOMToolkit-macos-arm64
+./CrowdStrikeIOMToolkit-macos-arm64
 ```
 
 This warning appears because the executable is not code-signed by an Apple Developer. The software is safe to use.
@@ -158,7 +158,7 @@ The toolkit will prompt for credentials if environment variables are not set.
 
 ```bash
 # Using executable
-./CrowdStrikeIOMToolkit-macos
+./CrowdStrikeIOMToolkit-macos-arm64
 
 # Using Python
 python custom_iom_toolkit.py
@@ -168,7 +168,7 @@ python custom_iom_toolkit.py
 
 ```bash
 # Using executable
-./CrowdStrikeIOMToolkit-macos --cli
+./CrowdStrikeIOMToolkit-macos-arm64 --cli
 
 # Using Python
 python custom_iom_toolkit.py --cli
